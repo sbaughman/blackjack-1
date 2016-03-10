@@ -3,4 +3,6 @@ require_relative: 'blackjack'
 
 class BlackJackTest < MiniTest::Test
 
+def test_
+
 end

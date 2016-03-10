@@ -1,22 +1,43 @@
+require_relative 'player'
+require_relative 'deck'
+
 class BlackJack
   attr_accessor :p1, :p2
 
-  def self.new_game(mode="normal")
+  def self.new_game(mode="normal") # also takes modes PVP and sim - could be descendant classes
     game = BlackJack.new
     new_players
+  end
+
+  def play
+    self.deal
+    self.players_decide
+  end
+
+  def deal
+    p1.cards << p1.deck.shift
+    p2.cards << p2.deck.shift
+  end
+
+  def new_players
+    self.p1 = Player.new
+    self.p2 = Player.new
+  end
+
+  def players_decide
+    p1.action
+    p2.action
+  end
+
+  def clear_cards
     game.p1.deck = Deck.new.shuffle!
     game.p2.deck = Deck.new.shuffle!
   end
 
-  def clear_cards
-    game.p1.deck = Deck.new.shuffle
-    game.p2.deck.shuffle
-  end
-
   def play_again
-    clear_cards
-    new_decks
-    player_actions
+    self.clear_cards
+    self.new_decks
+    self.player_actions
   end
 
   def check_for_winner
