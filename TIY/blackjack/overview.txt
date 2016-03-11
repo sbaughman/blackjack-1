@@ -1,0 +1,33 @@
+You should create classes for your data, and use methods instead of having one big loop
+Explorer
+
+Aces are worth 11
+2 players (player, dealer)
+Dealer hits if less than 16, else stays
+No splitting
+Dealt from one standard deck of 52 cards
+New shuffled deck every game
+Player decides hit or stay by typing command
+
+
+Player and Dealer’s objectives are to get as close to 21 as possible without busting
+You can see one of dealer’s cards (bottom one?)
+If somebody gets a blackjack they auto-win
+Ties = Player wins!
+
+Adventure
+
+A participant wins if they have six cards and are under 21
+Dealer wins if blackjack before any player action
+Ties go in favor of whoever has the most cards, if same then still in player’s favor
+
+Epic
+
+Track progress over time (W-L-D counts and percentages. More stats if you like)
+Player can choose if ace is 1 or 11
+Deck is seven decks combined and shuffled
+
+Legendary
+Tests for all criteria above
+Support for splitting
+

@@ -1,0 +1,35 @@
+Blackjack Architecture
+
+Only one game instance per game - new deck for each game
+Same player object for each game
+Decks with 52 cards - faces are 10, aces 11
+
+Player Attributes
+:name, (:nickname), (:tauntphrase), cards
+
+action - take input to hit, stay, (or split)
+
+Card Attributes
+:suit, :value, :face
+
+.hidden?
+
+Look
+Public method called by contains “l” and 4 characters or less - see visible cards in dealer’s hand (just first card dealt).
+
+Dealer < Player Attributes
+
+
+
+Game Attributes
+
+
+Self.deal
+
+Winner? Can be for
+
+def test_obssess_over_deck_size
+    his = Player.new
+    my = Player.new
+    1000.times { assert his.deck.size == my.deck.size }
+  end

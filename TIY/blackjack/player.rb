@@ -2,7 +2,7 @@ class Player
   attr_accessor   :name,
                   :deck,
                   :cards,
-                  :games_played
+                  :games_played,
                   :wins,
                   :losses,
                   :commands
