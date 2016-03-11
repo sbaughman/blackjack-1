@@ -31,3 +31,14 @@ Legendary
 Tests for all criteria above
 Support for splitting
 
+For a new game from scratch:
+New game object
+New player objects (players come with decks)
+
+For a restart:
+Clear hands
+New decks for players
+
+For summing hands:
+[Jack, 7].map{|card| card.value}.reduce(:+)
+

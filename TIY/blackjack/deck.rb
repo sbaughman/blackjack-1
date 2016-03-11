@@ -1,21 +1,18 @@
 require_relative 'card'
 
 class Deck < Array
-  attr_accessor :card
+  attr_accessor :card_key
+
   def initialize
-    self.card_key = [2, 3, 4, 5, 6, 7, 8, 9, "10JackQueenKing", "Ace"]
+    self.card_key = {2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, "Jack" => 10, "Queen" => 10, "King" => 10, "Ace" => 11}
     fill_suit("hearts")
     fill_suit("diamonds")
     fill_suit("clubs")
     fill_suit("spades")
   end
 
-  def get_card_value
-
-  end
-
+  # @param [Object] name
   def fill_suit(suit="hearts")
-    self.push(card_key.each_with_index { |value, index | Card.new(value.is_a? Numeric ? value : index, suit, face ) }
-    end
+    card_key.each_pair { |name, value| self << Card.new(value, suit, name.to_s) }
   end
 end

@@ -28,8 +28,3 @@ Self.deal
 
 Winner? Can be for
 
-def test_obssess_over_deck_size
-    his = Player.new
-    my = Player.new
-    1000.times { assert his.deck.size == my.deck.size }
-  end

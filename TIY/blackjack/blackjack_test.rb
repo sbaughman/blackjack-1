@@ -11,7 +11,11 @@ class BlackJackTest < MiniTest::Test
     assert Player.new.deck.size == 52
   end
 
-
+  def test_obssess_over_deck_size
+    his = Player.new
+    my = Player.new
+    1000.times { assert his.deck.size == my.deck.size }
+  end
 
   def test_suits_are_hearts_diamonds_clubs_spades
     x = Deck.new.map {|card| card.suit }.uniq.sort
@@ -19,7 +23,7 @@ class BlackJackTest < MiniTest::Test
   end
 
   def test_cards_have_numeric_values
-    assert Card.new.value.is_a? Numeric
+    assert (Card.new.value.is_a? Numeric), Card.new.value
   end
 
   def test_card_have_suits_that_are_strings # without the parens this tries to pass failure message as argument to is_a?
