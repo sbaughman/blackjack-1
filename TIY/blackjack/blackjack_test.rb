@@ -14,7 +14,7 @@ class BlackJackTest < MiniTest::Test
   def test_obssess_over_deck_size
     his = Player.new
     my = Player.new
-    1000.times { assert his.deck.size == my.deck.size }
+    10.times { assert his.deck.size == my.deck.size }
   end
 
   def test_suits_are_hearts_diamonds_clubs_spades

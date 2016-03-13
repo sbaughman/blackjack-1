@@ -11,7 +11,7 @@ class Deck < Array
     fill_suit("spades")
   end
 
-  # @param [Object] name
+  # @param [Object] name # <-- Why does Ruby Mine think I might want this?
   def fill_suit(suit="hearts")
     card_key.each_pair { |name, value| self << Card.new(value, suit, name.to_s) }
   end
