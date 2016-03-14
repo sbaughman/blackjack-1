@@ -42,6 +42,7 @@ class BlackJack
   def deal
     2.times {self.draw(player)}
     2.times {self.draw(dealer)}
+    dealer.hand[0].toggle_hide
   end
 
   def do_action(player, action)
@@ -53,7 +54,6 @@ class BlackJack
   end
 
   def show_table
-    dealer.hand[0].toggle_hide unless dealer.hand[0].hidden
     puts "\n"
     puts "Dealer's Hand:\n"
     dealer.hand.each {|card| puts card.info}
