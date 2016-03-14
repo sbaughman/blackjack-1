@@ -10,48 +10,28 @@ class BlackJack
     self.deck = Deck.new.shuffle!
     self.player = Player.new
     self.dealer = Dealer.new
-    self.deal
-    self.play_dealer
+    dealer.opponent = player
+    player.opponent = dealer
   end
 
-  def play_dealer
-    if dealer.blackjack?
-      show_table
-      puts "Dealer Blackjack! #{and_the_winner_is(dealer)}"
-      query_restart
-    elsif dealer.busted?
-      show_table
-      puts "Dealer busts! #{and_the_winner_is(player)}"
-      query_restart
-    else
-      show_table
-      do_action(dealer, dealer.get_action)
+  def play
+    deal
+    unless dealer.blackjack? || dealer.busted? || player.blackjack? || player.busted?
+      player_move(player)
+      player_move(dealer)
     end
-    if dealer.action == "hit"
-      play_dealer
-    else
-      play_player
-    end
+    puts and_the_winner_is(check_for_most_points)
   end
 
-  def play_player
-    if player.blackjack?
-      show_table
-      puts "Dealer Blackjack! #{and_the_winner_is(player)}"
-      query_restart
-    elsif player.busted?
-      show_table
-      puts "Dealer busts! #{and_the_winner_is(dealer)}"
-      query_restart
-    else
-      show_table
+  def player_move(player)
+    show_table
+    unless player.busted? || player.blackjack?
       do_action(player, player.get_action)
-    end
-    if player.action == "hit"
-      play_player
-    else
-      show_table
-      puts and_the_winner_is(check_for_most_points)
+      if player.action == "hit"
+        player_move(player)
+      else
+        show_table
+      end
     end
   end
 
@@ -149,9 +129,8 @@ class BlackJack
   end
 
   def and_the_winner_is(winner)
-    binding.pry
     "#{winner.name} wins with #{winner.hand_value}!"
   end
 end
 
-game = BlackJack.new
+BlackJack.new.play
