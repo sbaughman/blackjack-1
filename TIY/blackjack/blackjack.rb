@@ -4,33 +4,33 @@ require_relative 'dealer'
 require_relative 'deck'
 
 class BlackJack
-    attr_accessor :deck, :p1, :p2
+    attr_accessor :deck, :player, :dealer
 
   def initialize(mode="normal")
     self.deck = Deck.new.shuffle!
-    self.p1 = Player.new
-    self.p2 = Dealer.new
-    p1.opponent = p2
-    p2.opponent = p1
+    self.player = Player.new
+    self.dealer = Dealer.new
+    player.opponent = dealer
+    dealer.opponent = player
     self.deal
     self.play_dealer
   end
 
   # @return [Object] <-- What is the point of this? Ruby Mine keeps offering to add these to my methods
   def play_dealer
-    if p2.blackjack?
+    if dealer.blackjack?
       show_table
-      puts "Dealer Blackjack! #{and_the_winner_is(p2)}"
+      puts "Dealer Blackjack! #{and_the_winner_is(dealer)}"
       query_restart
-    elsif p2.busted?
+    elsif dealer.busted?
       show_table
-      puts "Dealer busts! #{and_the_winner_is(p1)}"
+      puts "Dealer busts! #{and_the_winner_is(player)}"
       query_restart
     else
       show_table
-      do_action(p2, p2.get_action)
+      do_action(dealer, dealer.get_action)
     end
-    if p2.action == "hit"
+    if dealer.action == "hit"
       play_dealer
     else
       play_player
@@ -38,19 +38,19 @@ class BlackJack
   end
 
   def play_player
-    if p1.blackjack?
+    if player.blackjack?
       show_table
-      puts "Dealer Blackjack! #{and_the_winner_is(p1)}"
+      puts "Dealer Blackjack! #{and_the_winner_is(player)}"
       query_restart
-    elsif p1.busted?
+    elsif player.busted?
       show_table
-      puts "Dealer busts! #{and_the_winner_is(p2)}"
+      puts "Dealer busts! #{and_the_winner_is(dealer)}"
       query_restart
     else
       show_table
-      do_action(p1, p1.get_action)
+      do_action(player, player.get_action)
     end
-    if p1.action == "hit"
+    if player.action == "hit"
       play_player
     else
       show_table
@@ -64,8 +64,8 @@ class BlackJack
 
     # this is maybe technically wrong for Blackjack (doesn't the dealer deal cards to players one at a time?) but within the constraints of the program
   def deal
-    2.times {self.draw(p1)}
-    2.times {self.draw(p2)}
+    2.times {self.draw(player)}
+    2.times {self.draw(dealer)}
     # 49.times {fight(beast)}
   end
 
@@ -79,20 +79,20 @@ class BlackJack
   end
 
   def show_table
-    p2.hand[0].toggle_hide unless p2.hand[0].hidden # I don't know why this line works the way it does - I thought it should be an if, not an unless
+    dealer.hand[0].toggle_hide unless dealer.hand[0].hidden # I don't know why this line works the way it does - I thought it should be an if, not an unless
     puts "\n"
     puts "Dealer's Hand:\n"
-    p2.hand.each {|card| puts card.info}
+    dealer.hand.each {|card| puts card.info}
     puts "\n"
     puts "Your Hand:\n"
-    p1.hand.each {|card| puts card.info}
+    player.hand.each {|card| puts card.info}
     puts "\n"
-    puts "Your hand's value is #{p1.hand_value}"
+    puts "Your hand's value is #{player.hand_value}"
   end
 
   def clear_cards
-    self.p1.hand = []
-    self.p2.hand = []
+    self.player.hand = []
+    self.dealer.hand = []
   end
 
   def new_deck
@@ -113,44 +113,44 @@ class BlackJack
   end
 
   def check_for_most_points
-    if p1.most_points?
-      p1
-    elsif p2.most_points?
-      p2
+    if player.most_points?
+      player
+    elsif dealer.most_points?
+      dealer
     else
       tiebreaker
     end
   end
 
   def check_for_blackjack
-    if p1.blackjack?
-      p1
-    elsif p2.blackjack?
-      p2
+    if player.blackjack?
+      player
+    elsif dealer.blackjack?
+      dealer
     else
       false
     end
   end
 
   def check_for_bust
-    if p1.busted? && !p2.busted?
-      p1
-    elsif p2.busted? && !p1.busted?
-      p2
-    elsif p2.busted? && p1.busted? # if both dealer and player bust, player loses
-      p1
+    if player.busted? && !dealer.busted?
+      player
+    elsif dealer.busted? && !player.busted?
+      dealer
+    elsif dealer.busted? && player.busted? # if both dealer and player bust, player loses
+      player
     else
       false
     end
   end
 
   def tiebreaker
-    if p1.hand.size > p2.hand.size
-      p1
-    elsif p2.hand.size > p1.hand.size
-      p2
+    if player.hand.size > dealer.hand.size
+      player
+    elsif dealer.hand.size > player.hand.size
+      dealer
     else
-      p1
+      player
     end
   end
 
