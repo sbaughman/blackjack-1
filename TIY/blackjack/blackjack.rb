@@ -22,7 +22,7 @@ class BlackJack
       show_table
       puts "Dealer Blackjack! #{and_the_winner_is(p2)}"
       query_restart
-    else if p2.busted?
+    elsif p2.busted?
       show_table
       puts "Dealer busts! #{and_the_winner_is(p1)}"
       query_restart
@@ -42,7 +42,7 @@ class BlackJack
       show_table
       puts "Dealer Blackjack! #{and_the_winner_is(p1)}"
       query_restart
-    else if p1.busted?
+    elsif p1.busted?
       show_table
       puts "Dealer busts! #{and_the_winner_is(p2)}"
       query_restart
