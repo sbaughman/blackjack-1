@@ -33,19 +33,19 @@ class Player
   end
 
   def hand_value
-    self.hand.map{|card| card.value}.reduce(:+) || 0
+    hand.map{|card| card.value}.reduce(:+) || 0
   end
 
   def blackjack?
-    self.hand_value == 21
+    hand_value == 21
   end
 
   def most_points?
-    self.hand_value > opponent.hand_value
+    hand_value > opponent.hand_value
   end
 
   def busted?
-    self.busted = true if self.hand_value > 21
+    self.busted = true if hand_value > 21
   end
 
   def stay
