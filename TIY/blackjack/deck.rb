@@ -5,10 +5,10 @@ class Deck < Array
 
   def initialize
     self.card_key = {2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10, "Jack" => 10, "Queen" => 10, "King" => 10, "Ace" => 11}
-    fill_suit("hearts")
-    fill_suit("diamonds")
-    fill_suit("clubs")
-    fill_suit("spades")
+    fill_suit("Hearts")
+    fill_suit("Diamonds")
+    fill_suit("Clubs")
+    fill_suit("Spades")
   end
 
   # @param [Object] name # <-- Why does Ruby Mine think I might want this?

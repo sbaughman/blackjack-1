@@ -6,50 +6,71 @@ require_relative 'deck'
 # You're welcome for an easy fix!
 
 class BlackJack
-  attr_accessor :p1, :p2
-  @@deck = Deck.new.shuffle!
-  @@players = [Player.new] # this Player.new then calls a Dealer.new to join it in the player array
-
-  def self.deck
-    @@deck
-  end
-
-  # Obviously trimming one of the two player methods below would be good, but I think I need the both now for things to run
-  def self.players
-    @@players
-  end
-
-  def players
-    @@players
-  end
+    attr_accessor :deck, :p1, :p2, :play_phase_over
 
   def initialize(mode="normal")
-    self.p1 = self.players[0]
-    self.p2 = self.players[1]
+    self.deck = Deck.new.shuffle!
+    self.p1 = Player.new
+    self.p2 = Dealer.new
+    p1.opponent = p2
+    p2.opponent = p1
+    # self.play_phase_over = false
     self.deal
     self.play_round
   end
 
+
+  # def play_game
+  #   play_round until play_phase_over
+  # end
+
   # @return [Object] <-- What is the point of this? Ruby Mine keeps offering to add these to my methods
   def play_round
+    puts self.and_the_winner_is(self.check_for_blackjack) if self.check_for_blackjack
+    puts self.and_the_winner_is(self.check_for_bust.opponent) if self.check_for_bust
+    show_table
     self.action_phase
-    self.check_for_winner
+    self.check_for_blackjack
+    puts self.and_the_winner_is(self.check_for_bust.opponent) if self.check_for_bust
+    play_round if p1.action == "hit" || p2.action == "hit"
   end
 
+  def draw(player)
+    # card = player == p2 ? p2.hand.shift.hide : p1.hand.shift
+    player == p2 ? player.hand << deck.shift.toggle_hide : player.hand << deck.shift
+  end
+
+    # this is maybe technically wrong for Blackjack (doesn't the dealer deal cards to players one at a time?) but within the constraints of the program
   def deal
-    2.times {self.p1.draw}
-    2.times {self.p2.draw}
-  end
-
-  # wanted to have indices in @@players always overwrite self.p1 and self.p2, or for self.p1 and self.p2 to always point to @@players[0] and @@players[1]
-  # this might need to be on multiple lines, we'll find out
-  def new_players
-    self.players = [ self.p1 = Player.new, self.p2 = Dealer.new ]
+    2.times {self.draw(p1)}
+    2.times {self.draw(p2)}
+    # 49.times {fight(beast)}
   end
 
   def action_phase
-    p1.action
-    p2.action
+    do_action(p1, p1.get_action)
+    do_action(p2, p2.get_action)
+    #if p1.action
+  end
+
+  def do_action(player, action)
+    if action == "hit"
+      draw(player)
+    else
+      nil
+    end
+  end
+
+  def show_table
+    p1.hand[0].toggle_hide unless p1.hand[0].hidden # I don't know why this line works the way it does - I thought it should be an if, not an unless
+    puts "\n"
+    puts "Dealer's Hand:\n"
+    p1.hand.each {|card| puts card.info}
+    puts "\n"
+    puts "Your Hand:\n"
+    p2.hand.each {|card| puts card.info}
+    puts "\n"
+    puts "Your hand's value is #{p2.hand_value}"
   end
 
   def clear_cards
@@ -68,15 +89,54 @@ class BlackJack
     self.play_round
   end
 
-  def check_for_winner
-    if p1.winner? && !p2.winner?
-      "#{p1.name} wins with #{p1.hand_value}!"
-    elsif p2.winner? && !p1.winner?
-      "#{p2.name} wins with #{p2.hand_value}!" # no else because it would be triggered at the end of every round without a winner
+  def check_for_most_points
+    if p1.most_points?
+      p1
+    elsif p2.most_points?
+      p2
+    else
+      tiebreaker
     end
+  end
+
+  def check_for_blackjack
+    if p1.blackjack?
+      p1
+    elsif p2.blackjack?
+      p2
+    else
+      false
+    end
+  end
+
+  def check_for_bust
+    if p1.busted? && !p2.busted?
+      p1
+    elsif p2.busted? && !p1.busted?
+      p2
+    elsif p2.busted? && p1.busted? # if both dealer and player bust, player loses
+      p1
+    else
+      false
+    end
+  end
+
+  def tiebreaker
+    if p1.hand.size > p2.hand.size
+      p1
+    elsif p2.hand.size > p1.hand.size
+      p2
+    else
+      p1
+    end
+  end
+
+  def and_the_winner_is(winner)
+    "#{winner.name} wins with #{winner.hand_value}!"
   end
 
 end
 
+
 game = BlackJack.new
-game.action_phase
+

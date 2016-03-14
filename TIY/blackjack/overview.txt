@@ -42,3 +42,7 @@ New decks for players
 For summing hands:
 [Jack, 7].map{|card| card.value}.reduce(:+)
 
+how and when to hide the cards?
+
+well, we can make a hide method but we don't actually need to -- we can just say, whenever we call card.info on a Dealer's cards it'll return a generic card description unless it's at index 0 of the dealer's hand.
+
