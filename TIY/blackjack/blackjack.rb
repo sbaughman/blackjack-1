@@ -23,6 +23,7 @@ class BlackJack
     dealer.hand[0].toggle_hide
     show_table
     puts and_the_winner_is(check_for_winner)
+    query_restart
   end
 
   def player_move(player)
@@ -82,10 +83,9 @@ class BlackJack
   end
 
   def play_again(mode="normal")
-    self.clear_cards
-    self.new_deck
-    self.deal
-    self.play_dealer
+    clear_cards
+    new_deck
+    play
   end
 
   def check_for_winner
