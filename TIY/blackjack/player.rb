@@ -6,7 +6,8 @@ class Player
                   :wins,
                   :losses,
                   :commands,
-                  :opponent
+                  :opponent,
+                  :busted
                   #:profile,:nickname,:tauntphrase,
 
   # One deck per game!
@@ -17,6 +18,7 @@ class Player
     self.wins = 0
     self.losses = 0
     self.commands = %w(hit stay)
+    self.busted = false
   end
 
   # Not having chomp in here stumped me for quite a while
@@ -43,7 +45,7 @@ class Player
   end
 
   def busted?
-    self.hand_value > 21
+    self.busted = true if self.hand_value > 21
   end
 
   def stay

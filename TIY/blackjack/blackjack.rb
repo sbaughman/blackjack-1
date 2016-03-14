@@ -4,7 +4,7 @@ require_relative 'dealer'
 require_relative 'deck'
 
 class BlackJack
-    attr_accessor :deck, :p1, :p2, :play_phase_over
+    attr_accessor :deck, :p1, :p2
 
   def initialize(mode="normal")
     self.deck = Deck.new.shuffle!
@@ -12,30 +12,60 @@ class BlackJack
     self.p2 = Dealer.new
     p1.opponent = p2
     p2.opponent = p1
-    # self.play_phase_over = false
     self.deal
-    self.play_round
+    self.play_dealer
   end
 
 
   # def play_game
-  #   play_round until play_phase_over
+  #   play_dealer until play_phase_over
   # end
 
   # @return [Object] <-- What is the point of this? Ruby Mine keeps offering to add these to my methods
-  def play_round
-    puts self.and_the_winner_is(self.check_for_blackjack) if self.check_for_blackjack
-    puts self.and_the_winner_is(self.check_for_bust.opponent) if self.check_for_bust
-    show_table
-    self.action_phase
-    self.check_for_blackjack
-    puts self.and_the_winner_is(self.check_for_bust.opponent) if self.check_for_bust
-    play_round if p1.action == "hit" || p2.action == "hit"
+  def play_dealer
+    if p2.blackjack?
+      show_table
+      puts "Dealer Blackjack! #{and_the_winner_is(p2)}"
+      query_restart
+    else if p2.busted?
+      show_table
+      puts "Dealer busts! #{and_the_winner_is(p1)}"
+      query_restart
+    else
+      show_table
+      do_action(p2, p2.get_action)
+    end
+    if p2.action == "hit"
+      play_dealer
+    else
+      play_player
+    end
+  end
+
+  def play_player
+    if p1.blackjack?
+      show_table
+      puts "Dealer Blackjack! #{and_the_winner_is(p2)}"
+      query_restart
+    else if p1.busted?  # What the shit is this indentation bullshit Ruby Mine. I thought you were cool
+           show_table
+           puts "Dealer busts! #{and_the_winner_is(p1)}"
+           query_restart
+         else
+           show_table
+           do_action(p1, p1.get_action)
+         end
+    if p1.action == "hit"
+      play_player
+    else
+      show_table
+      puts and_the_winner_is(check_for_most_points)
+    end
   end
 
   def draw(player)
     # card = player == p2 ? p2.hand.shift.hide : p1.hand.shift
-    player == p2 ? player.hand << deck.shift.toggle_hide : player.hand << deck.shift
+    player == p1 ? player.hand << deck.shift.toggle_hide : player.hand << deck.shift
   end
 
     # this is maybe technically wrong for Blackjack (doesn't the dealer deal cards to players one at a time?) but within the constraints of the program
@@ -45,12 +75,6 @@ class BlackJack
     # 49.times {fight(beast)}
   end
 
-  def action_phase
-    do_action(p1, p1.get_action)
-    do_action(p2, p2.get_action)
-    #if p1.action
-    # binding.pry
-  end
 
   def do_action(player, action)
     if action == "hit"
@@ -61,7 +85,7 @@ class BlackJack
   end
 
   def show_table
-    p1.hand[0].toggle_hide unless p1.hand[0].hidden # I don't know why this line works the way it does - I thought it should be an if, not an unless
+    p2.hand[0].toggle_hide unless p2.hand[0].hidden # I don't know why this line works the way it does - I thought it should be an if, not an unless
     puts "\n"
     puts "Dealer's Hand:\n"
     p2.hand.each {|card| puts card.info}
@@ -69,7 +93,7 @@ class BlackJack
     puts "Your Hand:\n"
     p1.hand.each {|card| puts card.info}
     puts "\n"
-    puts "Your hand's value is #{p2.hand_value}"
+    puts "Your hand's value is #{p1.hand_value}"
   end
 
   def clear_cards
@@ -81,11 +105,17 @@ class BlackJack
     self.deck = Deck.new.shuffle!
   end
 
-  def play_again(mode=normal)
+  def query_restart
+    puts "Would you like to play again?"
+    answer = STDIN.gets.chomp.downcase
+    play_again if answer.include?("y")
+  end
+
+  def play_again(mode="normal")
     self.clear_cards
     self.new_deck
     self.deal
-    self.play_round
+    self.play_dealer
   end
 
   def check_for_most_points
@@ -131,11 +161,10 @@ class BlackJack
   end
 
   def and_the_winner_is(winner)
+    binding.pry
     "#{winner.name} wins with #{winner.hand_value}!"
   end
 
 end
 
-
 game = BlackJack.new
-
