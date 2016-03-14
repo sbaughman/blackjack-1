@@ -14,7 +14,6 @@ class BlackJack
     self.play_dealer
   end
 
-  # @return [Object] <-- What is the point of this? Ruby Mine keeps offering to add these to my methods
   def play_dealer
     if dealer.blackjack?
       show_table
@@ -60,13 +59,10 @@ class BlackJack
     player.hand << deck.shift
   end
 
-    # this is maybe technically wrong for Blackjack (doesn't the dealer deal cards to players one at a time?) but within the constraints of the program
   def deal
     2.times {self.draw(player)}
     2.times {self.draw(dealer)}
-    # 49.times {fight(beast)}
   end
-
 
   def do_action(player, action)
     if action == "hit"
@@ -77,7 +73,7 @@ class BlackJack
   end
 
   def show_table
-    dealer.hand[0].toggle_hide unless dealer.hand[0].hidden # I don't know why this line works the way it does - I thought it should be an if, not an unless
+    dealer.hand[0].toggle_hide unless dealer.hand[0].hidden
     puts "\n"
     puts "Dealer's Hand:\n"
     dealer.hand.each {|card| puts card.info}
@@ -156,7 +152,6 @@ class BlackJack
     binding.pry
     "#{winner.name} wins with #{winner.hand_value}!"
   end
-
 end
 
 game = BlackJack.new
