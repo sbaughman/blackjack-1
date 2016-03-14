@@ -11,12 +11,8 @@ class Dealer < Player
   end
 
   def get_action
-    self.action = think_of_best_play
+    self.action = self.hand_value >= 16 ? "stay" : "hit"
     self.action
-  end
-
-  def think_of_best_play
-    (self.hand_value >= 16) ? "stay" : "hit"
   end
 
 end
