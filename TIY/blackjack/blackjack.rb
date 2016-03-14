@@ -108,28 +108,6 @@ class BlackJack
     end
   end
 
-  def check_for_blackjack
-    if player.blackjack?
-      player
-    elsif dealer.blackjack?
-      dealer
-    else
-      false
-    end
-  end
-
-  def check_for_bust
-    if player.busted? && !dealer.busted?
-      player
-    elsif dealer.busted? && !player.busted?
-      dealer
-    elsif dealer.busted? && player.busted? # if both dealer and player bust, player loses
-      player
-    else
-      false
-    end
-  end
-
   def tiebreaker
     if player.hand.size > dealer.hand.size
       player
