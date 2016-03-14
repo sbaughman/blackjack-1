@@ -8,7 +8,7 @@ class Card
   end
 
   def info
-    self.hidden ? "#{face} of #{suit}" : "A Card"
+    self.hidden ? "A Card" : "#{face} of #{suit}"
   end
 
   def toggle_hide
