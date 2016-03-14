@@ -10,8 +10,6 @@ class BlackJack
     self.deck = Deck.new.shuffle!
     self.player = Player.new
     self.dealer = Dealer.new
-    player.opponent = dealer
-    dealer.opponent = player
     self.deal
     self.play_dealer
   end
