@@ -1,9 +1,7 @@
+require 'pry'
 require_relative 'player'
 require_relative 'dealer'
 require_relative 'deck'
-
-# I used class variables because it was an easy way to let my players know about the game deck and about each other.
-# You're welcome for an easy fix!
 
 class BlackJack
     attr_accessor :deck, :p1, :p2, :play_phase_over
@@ -51,6 +49,7 @@ class BlackJack
     do_action(p1, p1.get_action)
     do_action(p2, p2.get_action)
     #if p1.action
+    # binding.pry
   end
 
   def do_action(player, action)
@@ -65,10 +64,10 @@ class BlackJack
     p1.hand[0].toggle_hide unless p1.hand[0].hidden # I don't know why this line works the way it does - I thought it should be an if, not an unless
     puts "\n"
     puts "Dealer's Hand:\n"
-    p1.hand.each {|card| puts card.info}
+    p2.hand.each {|card| puts card.info}
     puts "\n"
     puts "Your Hand:\n"
-    p2.hand.each {|card| puts card.info}
+    p1.hand.each {|card| puts card.info}
     puts "\n"
     puts "Your hand's value is #{p2.hand_value}"
   end

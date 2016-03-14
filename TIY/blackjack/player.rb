@@ -47,7 +47,7 @@ class Player
   end
 
   def stay
-    self.action = nil
+    self.action = "stay"
   end
 
 end
