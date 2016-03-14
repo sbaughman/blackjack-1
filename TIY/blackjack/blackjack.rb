@@ -22,7 +22,7 @@ class BlackJack
     end
     dealer.hand[0].toggle_hide
     show_table
-    puts and_the_winner_is(check_for_most_points)
+    puts and_the_winner_is(check_for_winner)
   end
 
   def player_move(player)
@@ -86,6 +86,16 @@ class BlackJack
     self.new_deck
     self.deal
     self.play_dealer
+  end
+
+  def check_for_winner
+    if player.busted? || dealer.blackjack?
+      dealer
+    elsif dealer.busted?
+      player
+    else
+      check_for_most_points
+    end
   end
 
   def check_for_most_points
