@@ -16,11 +16,6 @@ class BlackJack
     self.play_dealer
   end
 
-
-  # def play_game
-  #   play_dealer until play_phase_over
-  # end
-
   # @return [Object] <-- What is the point of this? Ruby Mine keeps offering to add these to my methods
   def play_dealer
     if p2.blackjack?
@@ -45,16 +40,16 @@ class BlackJack
   def play_player
     if p1.blackjack?
       show_table
-      puts "Dealer Blackjack! #{and_the_winner_is(p2)}"
+      puts "Dealer Blackjack! #{and_the_winner_is(p1)}"
       query_restart
-    else if p1.busted?  # What the shit is this indentation bullshit Ruby Mine. I thought you were cool
-           show_table
-           puts "Dealer busts! #{and_the_winner_is(p1)}"
-           query_restart
-         else
-           show_table
-           do_action(p1, p1.get_action)
-         end
+    else if p1.busted?
+      show_table
+      puts "Dealer busts! #{and_the_winner_is(p2)}"
+      query_restart
+    else
+      show_table
+      do_action(p1, p1.get_action)
+    end
     if p1.action == "hit"
       play_player
     else
@@ -64,7 +59,6 @@ class BlackJack
   end
 
   def draw(player)
-    # card = player == p2 ? p2.hand.shift.hide : p1.hand.shift
     player == p1 ? player.hand << deck.shift.toggle_hide : player.hand << deck.shift
   end
 
