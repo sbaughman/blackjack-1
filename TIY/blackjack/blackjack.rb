@@ -59,7 +59,7 @@ class BlackJack
   end
 
   def draw(player)
-    player == p1 ? player.hand << deck.shift.toggle_hide : player.hand << deck.shift
+    player.hand << deck.shift
   end
 
     # this is maybe technically wrong for Blackjack (doesn't the dealer deal cards to players one at a time?) but within the constraints of the program
