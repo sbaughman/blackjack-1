@@ -20,6 +20,8 @@ class BlackJack
       player_move(player)
       player_move(dealer)
     end
+    dealer.hand[0].toggle_hide
+    show_table
     puts and_the_winner_is(check_for_most_points)
   end
 
